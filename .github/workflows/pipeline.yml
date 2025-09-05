@@ -9,6 +9,8 @@ on:
         description: Name or Version
         required: true
         type: string
+#  schedule:
+#    cron: 0 1 * * * 
 
 
 jobs:
@@ -70,3 +72,15 @@ jobs:
         with:
           path: DevOpsDaysTasks
           name: DevOpsDaysTasks
+
+      #- name: Create ZIP 
+      # use copilot/ chatgpt for it
+
+      - name: Github release
+        uses: softprops/action-gh-releases@v2
+        #still will prevent the execution on nightly buil releases to github 
+        if: ${{ inputs.version }}
+        with: 
+          name: DevOpsDaysTasks
+          tag_name: ${{ inputs.version }}
+          files: DevOpsDaysTasks.zip
