@@ -25,16 +25,24 @@ jobs:
       # hard coded release version
       - name: Build Release Version
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=1.2 /p:VersionName=DevOpsDays
+
       # should not use workshop folder
+      - name: Checkout external files
+        uses: actions/checkout@v4
+        with:
+          repository: martinzimmermann/DevOpsDaysGraz2025-ExternalFiles
+          path: ExternalFiles
+
       - name: Copy workshop material
         run: |
           mkdir DevOpsDaysTasks/Templates
-          cp workshop_material/default-tasks.xml DevOpsDaysTasks/Templates/
+          cp ExternalFiles/default-tasks.xml DevOpsDaysTasks/Templates/
 
       - name: Copy help pdf
         run: |
           mkdir DevOpsDaysTasks/Help
-          cp workshop_material/default-tasks.xml DevOpsDaysTasks/Help
+          cp ExternalFiles/default-tasks.xml DevOpsDaysTasks/Help
+          
       # cleartext cert and pw
       - name: Create cert
         run:  | 
