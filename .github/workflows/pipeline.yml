@@ -20,10 +20,10 @@ jobs:
 
       - name: Run Integrations Test
         run: dotnet test .\src\DevOpsDaysTasks.IntegrationTests
-
+      # hard coded release version
       - name: Build Release Version
         run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=1.2 /p:VersionName=DevOpsDays
-
+      # should not use workshop folder
       - name: Copy workshop material
         run: |
           mkdir DevOpsDaysTasks/Templates
@@ -33,9 +33,13 @@ jobs:
         run: |
           mkdir DevOpsDaysTasks/Help
           cp workshop_material/default-tasks.xml DevOpsDaysTasks/Help
-
+      # cleartext cert and pw
       - name: Sign Release
         run: .\scripts\sign.ps1 .\DevOpsDaysTasks\DevOpsDaysTasks.UI.exe -PfxFile .\workshop_material\devopsdays_tasks_codesign.pfx -PfxPassword Password
         
-      - name: "hello Pipeline"
-        run: echo "hello Pipeline"
+      # no release
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: DevOpsDaysTasks
+          name: DevOpsDaysTasks
