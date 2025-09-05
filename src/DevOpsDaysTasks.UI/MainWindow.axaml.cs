@@ -25,9 +25,9 @@ public partial class MainWindow : Window
         Title = $"DevOpsDaysTasks - {GetVersionName()} - {GetVersion()}";
         Grid.ItemsSource = _items;
 
-        _repo = RepositoryFactory.Create(DbKind.SqlServer);
+        // _repo = RepositoryFactory.Create(DbKind.SqlServer);
         // If no local DB is installed we can fallback to Sqlite
-        // _repo = RepositoryFactory.Create(DbKind.Sqlite);
+        _repo = RepositoryFactory.Create(DbKind.Sqlite);
 
 
         Opened += async (_, __) =>
@@ -67,7 +67,7 @@ public partial class MainWindow : Window
         };
 
         var panel = new StackPanel { Margin = new Thickness(12), Spacing = 8 };
-        var box = new TextBox { Watermark = "Task title…" };
+        var box = new TextBox { Watermark = "Task titleï¿½" };
         var ok = new Button { Content = "OK", Width = 80 };
         ok.Click += (_, __) => input.Close(box.Text);
         panel.Children.Add(new TextBlock { Text = "Task title:" });
