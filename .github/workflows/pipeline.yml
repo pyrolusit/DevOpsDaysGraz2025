@@ -2,6 +2,14 @@ name: Release Pipeline
 
 on:
   push: {}
+  # for version tagging and controlling
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Name or Version
+        required: true
+        type: string
+
 
 jobs:
   release-pipeline:
@@ -22,9 +30,12 @@ jobs:
 
       - name: Run Integrations Test
         run: dotnet test .\src\DevOpsDaysTasks.IntegrationTests
+
       # hard coded release version
       - name: Build Release Version
-        run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=1.2 /p:VersionName=DevOpsDays
+        env: 
+          VERSION: ${{ inputs.version || '0.0.0' }}
+        run: dotnet publish -c Release src\DevOpsDaysTasks.UI\ -o DevOpsDaysTasks /p:Version=${{ inputs.version }} /p:VersionName=DevOpsDays
 
       # should not use workshop folder
       - name: Checkout external files
